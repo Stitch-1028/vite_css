@@ -11,21 +11,24 @@ const router = createRouter({
       path: '/001',
       component: () => import('../views/001_按钮手风琴/index.vue'),
       meta: {
-        theme: '001_按钮手风琴'
+        theme: '001_按钮手风琴',
+        number: 1
       }
     },
     {
       path: '/002',
       component: () => import('../views/002_标准手风琴/index.vue'),
       meta: {
-        theme: '002_标准手风琴'
+        theme: '002_标准手风琴',
+        number: 2
       }
     },
     {
       path: '/006',
       component: () => import('../views/006_悬停翻转的3D卡片/index.vue'),
       meta: {
-        theme: '006_悬停翻转的3D卡片'
+        theme: '006_悬停翻转的3D卡片',
+        number: 6
       }
     },
     {

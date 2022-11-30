@@ -16,7 +16,7 @@
               <DArrowLeft v-if="!aside.isShrink"></DArrowLeft>
             </el-icon>
           </div>
-          <p>{{ route.meta.theme }}</p>
+          <light-button></light-button>
         </el-header>
         <el-main class="main">
           <router-view></router-view>
@@ -27,12 +27,11 @@
 </template>
 
 <script setup>
-  import { useRoute } from 'vue-router'
   import Aside from './Aside/index.vue'
   import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
   import { useAside } from '@/stores/aside'
   import { computed } from 'vue'
-  const route = useRoute()
+  import LightButton from '@/components/发光按钮/index.vue'
   const aside = useAside()
   const isWidth = computed(() => {
     return aside.isShrink ? '65px' : '200px'
