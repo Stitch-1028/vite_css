@@ -1,6 +1,5 @@
 <template>
   <div class="box">
-    <ElButton type="primary">123</ElButton>
   </div>
 </template>
 
@@ -12,9 +11,5 @@
 .box{
   width: 100px;
   height:100px;
-  background-color: red;
-  p{
-    color: white;
-  }
 }
 </style>
