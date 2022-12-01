@@ -5,7 +5,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/001'
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      component: () => import('../views/login/index.vue')
     },
     {
       path: '/001',
@@ -29,6 +33,14 @@ const router = createRouter({
       meta: {
         theme: '006_悬停翻转的3D卡片',
         number: 6
+      }
+    },
+    {
+      path: '/008',
+      component: () => import('../views/008_玻璃卡片悬停效果/index.vue'),
+      meta: {
+        theme: '008_玻璃卡片悬停效果',
+        number: 8
       }
     },
     {

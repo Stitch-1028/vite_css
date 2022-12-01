@@ -43,7 +43,7 @@
   .left_box {
     width: 100%;
     height: 100%;
-
+    overflow: hidden;
     &_top {
       width: 100%;
       height: 60px;
@@ -53,6 +53,7 @@
       position: relative;
       z-index: 100;
       background-color: #141414;
+      // background-color: skyblue;
       opacity: 0.7;
     }
     .menu {

@@ -54,7 +54,6 @@
       font-size: 20px;
       font-weight: bold;
       background: repeating-linear-gradient(to right, #051325, #0c2747);
-      opacity: 0.7;
 
       &_icon {
         position: absolute;
