@@ -94,35 +94,35 @@
    */
   const onRegister = () => {
     // 格式校验
-    // for (const key in registerForm) {
-    //   if (registerForm[key] === '') {
-    //     ElMessage({
-    //       type: 'error',
-    //       message: '请将信息填写完整！'
-    //     })
-    //     return
-    //   }
-    // }
-    // const emailCheck = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|cn|net)$/
-    // if (!emailCheck.test(registerForm.email)) {
-    //   ElMessage({
-    //     type: 'error',
-    //     message: '邮箱格式有误！'
-    //   })
-    //   return
-    // } else if (registerForm.passWord.length < 6) {
-    //   ElMessage({
-    //     type: 'error',
-    //     message: '密码长度必须超过6位数！'
-    //   })
-    //   return
-    // } else if (registerForm.passWord !== registerForm.checkPassWord) {
-    //   ElMessage({
-    //     type: 'error',
-    //     message: '密码不一致，请核对！'
-    //   })
-    //   return
-    // }
+    for (const key in registerForm) {
+      if (registerForm[key] === '') {
+        ElMessage({
+          type: 'error',
+          message: '请将信息填写完整！'
+        })
+        return
+      }
+    }
+    const emailCheck = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|cn|net)$/
+    if (!emailCheck.test(registerForm.email)) {
+      ElMessage({
+        type: 'error',
+        message: '邮箱格式有误！'
+      })
+      return
+    } else if (registerForm.passWord.length < 6) {
+      ElMessage({
+        type: 'error',
+        message: '密码长度必须超过6位数！'
+      })
+      return
+    } else if (registerForm.passWord !== registerForm.checkPassWord) {
+      ElMessage({
+        type: 'error',
+        message: '密码不一致，请核对！'
+      })
+      return
+    }
     // 注册成功 保存用户信息
     if (!localStorage.getItem('userInfo')) {
       localStorage.setItem('userInfo', JSON.stringify([]))
@@ -131,7 +131,7 @@
     const userList = JSON.parse(localStorage.getItem('userInfo'))
     userList.push(registerForm)
     localStorage.setItem('userInfo', JSON.stringify(userList))
-    // 保存成功 使用户直接登录 不在需要手动登录
+    // 保存成功 使用户直接登录 不在需要手动登录 TODO...
   }
 
   /**
