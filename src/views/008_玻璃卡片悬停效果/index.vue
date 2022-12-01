@@ -11,7 +11,7 @@
             Realistic glass card hover effect, realistic glass card hover effect, realistic glass
             card hover effect.
           </p>
-          <a href="#">Read More</a>
+          <a @click="onclickA(1)">Read More</a>
         </div>
       </div>
       <div
@@ -24,7 +24,7 @@
             Realistic glass card hover effect, realistic glass card hover effect, realistic glass
             card hover effect.
           </p>
-          <a href="#">Read More</a>
+          <a @click="onclickA(2)">Read More</a>
         </div>
       </div>
       <div
@@ -37,7 +37,7 @@
             Realistic glass card hover effect, realistic glass card hover effect, realistic glass
             card hover effect, realistic glass card hover effect.
           </p>
-          <a href="#">Read More</a>
+          <a @click="onclickA(3)">Read More</a>
         </div>
       </div>
     </div>
@@ -58,6 +58,9 @@
       'max-glare': 1 //最大眩光的不透明度
     })
   })
+  const onclickA = (e) => {
+    console.log(e)
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -126,6 +129,7 @@
           }
           a {
             position: relative;
+            cursor: pointer;
             display: inline-block;
             padding: 8px 20px;
             margin-top: 15px;

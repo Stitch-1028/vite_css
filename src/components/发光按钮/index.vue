@@ -85,12 +85,12 @@
       /* 设置以上属性的延迟时间 */
       transition-delay: 0.4s;
       &::before {
-        width: 100%;
+        width: 99%;
         height: 58px;
         transition-delay: 0s;
       }
       &::after {
-        width: 100%;
+        width: 99%;
         height: 58px;
         transition-delay: 0s;
       }

@@ -19,7 +19,7 @@
           <light-button></light-button>
         </el-header>
         <el-main class="main">
-          <router-view></router-view>
+          <RouterView></RouterView>
         </el-main>
       </el-container>
     </el-container>
@@ -45,6 +45,13 @@
   .common-layout {
     width: 100%;
     height: 100%;
+    /* 渐变背景 */
+    background: linear-gradient(125deg, #2c3e50, #27ae60, #2980b9, #557424, #8e44ad);
+    // background: black;
+    /* 指定背景图像的大小 */
+    background-size: 500%;
+    /* 执行动画：动画名 时长 线性的 无限次播放 */
+    animation: bgAnimation 15s linear infinite;
     .header {
       display: flex;
       align-items: center;
@@ -76,6 +83,18 @@
       -moz-transition: width 0.5s;
       -webkit-transition: width 0.5s;
       -o-transition: width 0.5s;
+    }
+  }
+  /* 定义动画 */
+  @keyframes bgAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
     }
   }
 </style>

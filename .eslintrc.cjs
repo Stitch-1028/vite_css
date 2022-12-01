@@ -28,5 +28,15 @@ module.exports = {
       files: ['*.vue'],
       rules: { indent: 'off' }
     }
-  ]
+  ],
+  globals: {
+    defineEmits: 'readonly',
+    defineProps: 'readonly',
+    defineExpose: 'readonly',
+    withDefaults: 'readonly',
+    WeixinJSBridge: 'readonly',
+    ElMessage: 'readonly',
+    ElMessageBox: 'readonly',
+    ElLoading: 'readonly'
+  }
 }
