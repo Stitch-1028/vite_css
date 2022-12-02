@@ -171,14 +171,13 @@
       }
     }
 
-    // if (!emailCheck.test(registerForm.email)) {
-    //   ElMessage.error('邮箱格式有误！')
-    // } else if (registerForm.passWord.length < 6) {
-    //   ElMessage.error('密码长度必须超过6位数！')
-    // } else if (registerForm.passWord !== registerForm.checkPassWord) {
-    //   ElMessage.error('密码不一致，请核对！')
-    // } else
-    if (userList) {
+    if (!emailCheck.test(registerForm.email)) {
+      ElMessage.error('邮箱格式有误！')
+    } else if (registerForm.passWord.length < 6) {
+      ElMessage.error('密码长度必须超过6位数！')
+    } else if (registerForm.passWord !== registerForm.checkPassWord) {
+      ElMessage.error('密码不一致，请核对！')
+    } else if (userList) {
       // 验证邮箱是否已经被注册
       const repeatList = userList.filter((item) => {
         return registerForm.email == item.email
