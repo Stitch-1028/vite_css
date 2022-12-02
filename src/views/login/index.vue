@@ -12,7 +12,7 @@
           <input
             v-model="registerForm.userName"
             type="text"
-            placeholder="用户名" />
+            placeholder="用户名/手机号" />
           <input
             v-model="registerForm.email"
             type="email"
@@ -33,9 +33,11 @@
           class="login-box">
           <h1>login</h1>
           <input
+            v-model="loginForm.userName"
             type="text"
             placeholder="用户名" />
           <input
+            v-model="loginForm.passWord"
             type="password"
             placeholder="密码" />
           <button @click="onLogin">登录</button>
@@ -69,6 +71,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
   import { emailCheck } from '@/plugins/reg'
+  import { useGetLocalStorage, useSetLocalStorage } from '@/plugins/localStorage'
   // 绑定元素
   const form_box = ref(null)
   const register_box = ref(null)
@@ -90,6 +93,10 @@
     passWord: '',
     checkPassWord: ''
   })
+  const loginForm = reactive({
+    userName: '',
+    passWord: ''
+  })
   // 切换
   const goToRegister = () => {
     form_box.value.style.transform = 'translateX(80%)'
@@ -106,7 +113,7 @@
    */
   const onRegister = () => {
     // 将用户数据保存到本地缓存中
-    const userList = JSON.parse(localStorage.getItem('userInfo'))
+    const userList = useGetLocalStorage('userInfos')
     // 格式校验
     for (const key in registerForm) {
       if (registerForm[key] === '') {
@@ -115,16 +122,17 @@
       }
     }
 
-    if (!emailCheck.test(registerForm.email)) {
-      ElMessage.error('邮箱格式有误！')
-      return
-    } else if (registerForm.passWord.length < 6) {
-      ElMessage.error('密码长度必须超过6位数！')
-      return
-    } else if (registerForm.passWord !== registerForm.checkPassWord) {
-      ElMessage.error('密码不一致，请核对！')
-      return
-    } else if (userList) {
+    // if (!emailCheck.test(registerForm.email)) {
+    //   ElMessage.error('邮箱格式有误！')
+    //   return
+    // } else if (registerForm.passWord.length < 6) {
+    //   ElMessage.error('密码长度必须超过6位数！')
+    //   return
+    // } else if (registerForm.passWord !== registerForm.checkPassWord) {
+    //   ElMessage.error('密码不一致，请核对！')
+    //   return
+    // } else
+    if (userList) {
       // 验证邮箱是否已经被注册
       userList.map((item) => {
         if (registerForm.email == item.email) {
@@ -135,12 +143,15 @@
     } else {
       // 注册成功 保存用户信息
       if (!userList) {
-        localStorage.setItem('userInfo', JSON.stringify([]))
+        localStorage.setItem('userInfos', JSON.stringify([]))
       }
-      const newUserList = JSON.parse(localStorage.getItem('userInfo'))
+      const newUserList = useGetLocalStorage('userInfos')
+      // 将注册过的账号保存到本地缓存中
       newUserList.push(registerForm)
-      localStorage.setItem('userInfo', JSON.stringify(newUserList))
-      // 保存成功 使用户直接登录 不在需要手动登录 TODO...
+      useSetLocalStorage('userInfos', newUserList)
+      // 同时保存当前账号保存在本地
+      useSetLocalStorage('User', registerForm)
+      // 保存成功 使用户直接登录 不在需要手动登录
       /**
        * userInfo.$patch({ isLogin: true })这种也可以修改pinia
        */
@@ -153,7 +164,9 @@
   /**
    * 登录
    */
-  const onLogin = () => {}
+  const onLogin = () => {
+    console.log(loginForm)
+  }
 </script>
 
 <style lang="scss" scoped>
