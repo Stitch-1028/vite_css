@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useUserInfo } from '@/stores/user'
-
+import { useGetLocalStorage } from '@/plugins/localStorage'
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -56,14 +55,14 @@ const router = createRouter({
   ]
 })
 router.beforeEach((to, form, next) => {
-  const userInfo = useUserInfo()
+  const isToken = useGetLocalStorage('token', true)
   // 没登录 && 去登录页面
-  if (!userInfo.isLogin && to.path == '/login') {
+  if (!isToken && to.path == '/login') {
     next()
-  } else if (!userInfo.isLogin && to.path != '/login') {
+  } else if (!isToken && to.path != '/login') {
     // 没登录 && 去其他页面
     next({ name: 'Login', query: { msg: '给爷登录,恶心的家伙' } })
-  } else if (userInfo.isLogin && to.path != '/login') {
+  } else if (isToken && to.path != '/login') {
     // 登录了 && 去其他页面
     localStorage.setItem('pathUrl', to.path.split('/')[1])
     next()

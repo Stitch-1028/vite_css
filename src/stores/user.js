@@ -5,7 +5,6 @@ export const useUserInfo = defineStore('userInfo', {
   // 推荐使用 完整类型推断的箭头函数
   state: () => {
     return {
-      isLogin: false,
       userName: '',
       email: '',
       passWord: ''
@@ -23,7 +22,6 @@ export const useUserInfo = defineStore('userInfo', {
   actions: {
     // 注册成功或者登录成功
     onSuccess(form) {
-      this.isLogin = true
       this.userName = form?.userName
       this.email = form?.email
       this.passWord = form?.passWord

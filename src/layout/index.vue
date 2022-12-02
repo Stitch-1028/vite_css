@@ -17,6 +17,14 @@
             </el-icon>
           </div>
           <light-button></light-button>
+          <div class="block">
+            <el-avatar
+              :size="50"
+              :src="userIcon"
+              @mouseenter="showUserInfo = true"
+              @mouseleave="showUserInfo = false">
+            </el-avatar>
+          </div>
         </el-header>
         <el-main class="main">
           <RouterView></RouterView>
@@ -24,21 +32,36 @@
       </el-container>
     </el-container>
   </div>
+
+  <transition name="el-zoom-in-top">
+    <!-- <user-info
+      :show-user-info="showUserInfo"
+      @keep="getInfoShow">
+    </user-info> -->
+    <user-info v-model:show="showUserInfo"> </user-info>
+  </transition>
 </template>
 
 <script setup>
-  import Aside from './Aside/index.vue'
+  import { ref } from 'vue'
+  import userIcon from '@/assets/image/03.jpg'
   import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
   import { useAside } from '@/stores/aside'
   import { computed } from 'vue'
+  import Aside from './Aside/index.vue'
   import LightButton from '@/components/发光按钮/index.vue'
+  import userInfo from '@/components/用户信息/index.vue'
   const aside = useAside()
   const isWidth = computed(() => {
     return aside.isShrink ? '65px' : '200px'
   })
+  const showUserInfo = ref(false)
   const isCollapse = () => {
     aside.updatedShrink()
   }
+  // const getInfoShow = (val) => {
+  //   showUserInfo.value = val
+  // }
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +78,7 @@
     .header {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       position: relative;
       color: white;
       font-size: 20px;
@@ -63,11 +86,18 @@
       background: repeating-linear-gradient(to right, #051325, #0c2747);
 
       &_icon {
-        position: absolute;
         width: 20px;
         height: 20px;
         left: 45px;
+        margin-left: 30px;
         cursor: pointer;
+      }
+      .block {
+        margin-right: 40px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .main {

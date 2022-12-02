@@ -84,34 +84,10 @@
     if (route.query.msg) {
       ElMessage.error(route.query.msg)
     } else {
-      ElMessageBox.confirm('检测到你曾经登陆过,是否直接登录？', 'Tips', {
-        confirmButtonText: '必须的',
-        cancelButtonText: '给爷爬',
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = 'Loading...'
-            onLogin()
-            instance.confirmButtonLoading = false
-            done()
-          } else {
-            done()
-          }
-        }
-      })
-        .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '嘟嘟噜━(*｀∀´*)ノ亻!'
-          })
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'warning',
-            message: '好的 呜呜呜~'
-          })
-        })
+      const isToken = useGetLocalStorage('token', true)
+      if (isToken) {
+        tokenLogin()
+      }
     }
   })
   /**
@@ -173,10 +149,13 @@
 
     if (!emailCheck.test(registerForm.email)) {
       ElMessage.error('邮箱格式有误！')
+      return
     } else if (registerForm.passWord.length < 6) {
       ElMessage.error('密码长度必须超过6位数！')
+      return
     } else if (registerForm.passWord !== registerForm.checkPassWord) {
       ElMessage.error('密码不一致，请核对！')
+      return
     } else if (userList) {
       // 验证邮箱是否已经被注册
       const repeatList = userList.filter((item) => {
@@ -185,6 +164,7 @@
       if (repeatList.length > 0) {
         emailRepeat.value = true
         ElMessage.error('该邮箱已经被注册！')
+        return
       } else {
         emailRepeat.value = false
       }
@@ -199,12 +179,14 @@
       newUserList.push(registerForm)
       useSetLocalStorage('userInfos', newUserList)
       // 同时保存当前账号保存在本地
-      useSetLocalStorage('User', registerForm)
+      useSetLocalStorage('user', registerForm)
       // 保存成功 使用户直接登录 不在需要手动登录
       /**
        * userInfo.$patch({ isLogin: true })这种也可以修改pinia
        */
       userInfo.onSuccess(registerForm)
+      // 已经登录过Token 存入本地
+      useSetLocalStorage('token', 'token')
       ElMessage.success('嘟嘟噜━(*｀∀´*)ノ亻!')
       router.push('/')
     }
@@ -222,18 +204,53 @@
   }
   // 登录功能 封装一下 方便自动登录
   const onLogin = (type) => {
+    useSetLocalStorage('token', 'token')
     if (type || type == 'login') {
       // 同时保存当前账号保存在本地
-      useSetLocalStorage('User', isPass.value.info)
+      useSetLocalStorage('user', isPass.value.info)
       userInfo.onSuccess(isPass.value.info)
       ElMessage.success('嘟嘟噜━(*｀∀´*)ノ亻!')
       router.push('/')
     } else {
       // 直接获取本地账号登录
-      const Info = useGetLocalStorage('User')
+      const Info = useGetLocalStorage('user')
       userInfo.onSuccess(Info)
       router.push('/')
     }
+  }
+  const tokenLogin = () => {
+    ElMessageBox.confirm(
+      '检测到你曾经来到过夜之城,如果不是脑瘫的话,我想你也不想再登录一次吧',
+      'Tips',
+      {
+        confirmButtonText: '我不是脑瘫',
+        cancelButtonText: '爷就是脑瘫',
+        type: 'warning',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = 'Loading...'
+            onLogin()
+            instance.confirmButtonLoading = false
+            done()
+          } else {
+            done()
+          }
+        }
+      }
+    )
+      .then(() => {
+        ElMessage({
+          type: 'success',
+          message: '嘟嘟噜━(*｀∀´*)ノ亻!'
+        })
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'warning',
+          message: '好吧好吧 你牛逼~'
+        })
+      })
   }
 </script>
 
