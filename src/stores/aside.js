@@ -6,15 +6,15 @@ export const useAside = defineStore('aside', {
   // 推荐使用 完整类型推断的箭头函数
   state: () => {
     return {
-      isShrink: false,
+      isShrink: false
     }
   },
   getters: {
-    unIsShrink: (state) => !state.isShrink,
+    unIsShrink: (state) => !state.isShrink
   },
   actions: {
-    updatedShrink(){
+    updatedShrink() {
       this.isShrink = this.isShrink ? false : true
-    } 
+    }
   }
 })

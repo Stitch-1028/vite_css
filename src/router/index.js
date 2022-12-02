@@ -1,10 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useUserInfo } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
       path: '/login',
+      name: 'Login',
       component: () => import('../views/login/index.vue')
     },
     {
@@ -54,11 +56,19 @@ const router = createRouter({
   ]
 })
 router.beforeEach((to, form, next) => {
-  if (to.path) {
+  const userInfo = useUserInfo()
+  // 没登录 && 去登录页面
+  if (!userInfo.isLogin && to.path == '/login') {
+    next()
+  } else if (!userInfo.isLogin && to.path != '/login') {
+    // 没登录 && 去其他页面
+    next({ name: 'Login', query: { msg: '请先登录' } })
+  } else if (userInfo.isLogin && to.path != '/login') {
+    // 登录了 && 去其他页面
     localStorage.setItem('pathUrl', to.path.split('/')[1])
     next()
   } else {
-    next({ path: '/login', params: { isLogin: false } })
+    next()
   }
 })
 export default router

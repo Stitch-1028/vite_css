@@ -64,11 +64,23 @@
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { onMounted, reactive, ref } from 'vue'
+  import { useUserInfo } from '@/stores/user'
+  import { useRoute, useRouter } from 'vue-router'
+  import { ElMessage } from 'element-plus'
+  import { emailCheck } from '@/plugins/reg'
   // 绑定元素
   const form_box = ref(null)
   const register_box = ref(null)
   const login_box = ref(null)
+  const userInfo = useUserInfo()
+  const route = useRoute()
+  const router = useRouter()
+  onMounted(() => {
+    if (route.query.msg) {
+      ElMessage.error(route.query.msg)
+    }
+  })
   /**
    * 注册Form
    */
@@ -93,45 +105,49 @@
    * 注册
    */
   const onRegister = () => {
+    // 将用户数据保存到本地缓存中
+    const userList = JSON.parse(localStorage.getItem('userInfo'))
     // 格式校验
     for (const key in registerForm) {
       if (registerForm[key] === '') {
-        ElMessage({
-          type: 'error',
-          message: '请将信息填写完整！'
-        })
+        ElMessage.error('请将信息填写完整！')
         return
       }
     }
-    const emailCheck = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|cn|net)$/
+
     if (!emailCheck.test(registerForm.email)) {
-      ElMessage({
-        type: 'error',
-        message: '邮箱格式有误！'
-      })
+      ElMessage.error('邮箱格式有误！')
       return
     } else if (registerForm.passWord.length < 6) {
-      ElMessage({
-        type: 'error',
-        message: '密码长度必须超过6位数！'
-      })
+      ElMessage.error('密码长度必须超过6位数！')
       return
     } else if (registerForm.passWord !== registerForm.checkPassWord) {
-      ElMessage({
-        type: 'error',
-        message: '密码不一致，请核对！'
-      })
+      ElMessage.error('密码不一致，请核对！')
       return
+    } else if (userList) {
+      // 验证邮箱是否已经被注册
+      userList.map((item) => {
+        if (registerForm.email == item.email) {
+          ElMessage.error('该邮箱已经被注册！')
+          return
+        }
+      })
+    } else {
+      // 注册成功 保存用户信息
+      if (!userList) {
+        localStorage.setItem('userInfo', JSON.stringify([]))
+      }
+      const newUserList = JSON.parse(localStorage.getItem('userInfo'))
+      newUserList.push(registerForm)
+      localStorage.setItem('userInfo', JSON.stringify(newUserList))
+      // 保存成功 使用户直接登录 不在需要手动登录 TODO...
+      /**
+       * userInfo.$patch({ isLogin: true })这种也可以修改pinia
+       */
+      userInfo.onSuccess(registerForm)
+      ElMessage.success('嘟嘟噜━(*｀∀´*)ノ亻!')
+      router.push('/')
     }
-    // 注册成功 保存用户信息
-    if (!localStorage.getItem('userInfo')) {
-      localStorage.setItem('userInfo', JSON.stringify([]))
-    }
-    // // 将用户数据保存到本地缓存中
-    const userList = JSON.parse(localStorage.getItem('userInfo'))
-    userList.push(registerForm)
-    localStorage.setItem('userInfo', JSON.stringify(userList))
-    // 保存成功 使用户直接登录 不在需要手动登录 TODO...
   }
 
   /**
