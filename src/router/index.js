@@ -62,10 +62,9 @@ router.beforeEach((to, form, next) => {
     next()
   } else if (!userInfo.isLogin && to.path != '/login') {
     // 没登录 && 去其他页面
-    next({ name: 'Login', query: { msg: '请先登录' } })
+    next({ name: 'Login', query: { msg: '给爷登录,恶心的家伙' } })
   } else if (userInfo.isLogin && to.path != '/login') {
     // 登录了 && 去其他页面
-    console.log('// 登录了 && 去其他页面')
     localStorage.setItem('pathUrl', to.path.split('/')[1])
     next()
   } else {

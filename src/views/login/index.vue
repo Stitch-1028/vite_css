@@ -40,12 +40,12 @@
             v-model="loginForm.passWord"
             type="password"
             placeholder="密码" />
-          <button @click="onLogin">登录</button>
+          <button @click="onSubmit">登录</button>
         </div>
       </div>
       <div class="con-box left">
-        <h2>欢迎来到<span>宠物之家</span></h2>
-        <p>快来领取你的专属<span>宠物</span>吧</p>
+        <h2>欢迎来到<span>夜之城</span></h2>
+        <p>让我们把这儿<span>烧成灰</span>吧</p>
         <img
           src="../../assets/image/01.jpg"
           alt="" />
@@ -53,10 +53,10 @@
         <button @click="goToLogin"> 去登录 </button>
       </div>
       <div class="con-box right">
-        <h2>欢迎来到<span>宠物之家</span></h2>
-        <p>快来看看你的可爱<span>宠物</span>吧</p>
+        <h2>欢迎来到<span>夜之城</span></h2>
+        <p>让我们把这儿<span>烧成灰</span>吧</p>
         <img
-          src="../../assets/image/01.jpg"
+          src="../../assets/image/06.jpg"
           alt="" />
         <p>没有账号？</p>
         <button @click="goToRegister"> 去注册 </button>
@@ -66,10 +66,9 @@
 </template>
 
 <script setup>
-  import { onMounted, reactive, ref } from 'vue'
+  import { computed, onMounted, reactive, ref } from 'vue'
   import { useUserInfo } from '@/stores/user'
   import { useRoute, useRouter } from 'vue-router'
-  import { ElMessage } from 'element-plus'
   import { emailCheck } from '@/plugins/reg'
   import { useGetLocalStorage, useSetLocalStorage } from '@/plugins/localStorage'
   // 绑定元素
@@ -79,9 +78,40 @@
   const userInfo = useUserInfo()
   const route = useRoute()
   const router = useRouter()
+  // 默认邮箱没有重复
+  const emailRepeat = ref(false)
   onMounted(() => {
     if (route.query.msg) {
       ElMessage.error(route.query.msg)
+    } else {
+      ElMessageBox.confirm('检测到你曾经登陆过,是否直接登录？', 'Tips', {
+        confirmButtonText: '必须的',
+        cancelButtonText: '给爷爬',
+        type: 'warning',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = 'Loading...'
+            onLogin()
+            instance.confirmButtonLoading = false
+            done()
+          } else {
+            done()
+          }
+        }
+      })
+        .then(() => {
+          ElMessage({
+            type: 'success',
+            message: '嘟嘟噜━(*｀∀´*)ノ亻!'
+          })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'warning',
+            message: '好的 呜呜呜~'
+          })
+        })
     }
   })
   /**
@@ -96,6 +126,25 @@
   const loginForm = reactive({
     userName: '',
     passWord: ''
+  })
+  // 计算属性
+  const isPass = computed(() => {
+    // 获取已注册的用户数据
+    const userList = useGetLocalStorage('userInfos')
+    const arr = userList.filter((item) => {
+      return item.userName == loginForm.userName && item.passWord == loginForm.passWord
+    })
+    if (arr.length > 0) {
+      return {
+        loading: true,
+        info: arr[0]
+      }
+    } else {
+      return {
+        loading: false,
+        info: {}
+      }
+    }
   })
   // 切换
   const goToRegister = () => {
@@ -124,26 +173,27 @@
 
     // if (!emailCheck.test(registerForm.email)) {
     //   ElMessage.error('邮箱格式有误！')
-    //   return
     // } else if (registerForm.passWord.length < 6) {
     //   ElMessage.error('密码长度必须超过6位数！')
-    //   return
     // } else if (registerForm.passWord !== registerForm.checkPassWord) {
     //   ElMessage.error('密码不一致，请核对！')
-    //   return
     // } else
     if (userList) {
       // 验证邮箱是否已经被注册
-      userList.map((item) => {
-        if (registerForm.email == item.email) {
-          ElMessage.error('该邮箱已经被注册！')
-          return
-        }
+      const repeatList = userList.filter((item) => {
+        return registerForm.email == item.email
       })
-    } else {
+      if (repeatList.length > 0) {
+        emailRepeat.value = true
+        ElMessage.error('该邮箱已经被注册！')
+      } else {
+        emailRepeat.value = false
+      }
+    }
+    if (!emailRepeat.value) {
       // 注册成功 保存用户信息
       if (!userList) {
-        localStorage.setItem('userInfos', JSON.stringify([]))
+        useSetLocalStorage('userInfos', [])
       }
       const newUserList = useGetLocalStorage('userInfos')
       // 将注册过的账号保存到本地缓存中
@@ -164,8 +214,27 @@
   /**
    * 登录
    */
-  const onLogin = () => {
-    console.log(loginForm)
+  const onSubmit = () => {
+    if (isPass.value.loading) {
+      onLogin('login')
+    } else {
+      ElMessage.error('用户名或密码不正确耶~')
+    }
+  }
+  // 登录功能 封装一下 方便自动登录
+  const onLogin = (type) => {
+    if (type || type == 'login') {
+      // 同时保存当前账号保存在本地
+      useSetLocalStorage('User', isPass.value.info)
+      userInfo.onSuccess(isPass.value.info)
+      ElMessage.success('嘟嘟噜━(*｀∀´*)ノ亻!')
+      router.push('/')
+    } else {
+      // 直接获取本地账号登录
+      const Info = useGetLocalStorage('User')
+      userInfo.onSuccess(Info)
+      router.push('/')
+    }
   }
 </script>
 
