@@ -44,6 +44,46 @@ const router = createRouter({
             theme: '008_玻璃卡片悬停效果',
             number: 8
           }
+        },
+        {
+          path: '/010',
+          component: () => import('../views/010_图像悬停效果/index.vue'),
+          meta: {
+            theme: '010_图像悬停效果',
+            number: 10
+          }
+        },
+        {
+          path: '/011',
+          component: () => import('../views/011_人物介绍卡片/index.vue'),
+          meta: {
+            theme: '011_人物介绍卡片',
+            number: 11
+          }
+        },
+        {
+          path: '/013',
+          component: () => import('../views/013_响应式卡片悬停效果/index.vue'),
+          meta: {
+            theme: '013_响应式卡片悬停效果',
+            number: 13
+          }
+        },
+        {
+          path: '/014',
+          component: () => import('../views/014_抽屉式相册/index.vue'),
+          meta: {
+            theme: '014_抽屉式相册',
+            number: 14
+          }
+        },
+        {
+          path: '/016',
+          component: () => import('../views/016_3D旋转卡片/index.vue'),
+          meta: {
+            theme: '016_3D旋转卡片',
+            number: 16
+          }
         }
       ]
     },

@@ -3,9 +3,9 @@
     <div class="box">
       <div class="front">
         <div class="icon">
-          <i
-            class="fa fa-apple"
-            aria-hidden="true"></i>
+          <img
+            src="../../assets/image/01.jpg"
+            alt="" />
         </div>
         <span>Apple</span>
       </div>
@@ -21,9 +21,9 @@
     <div class="box">
       <div class="front">
         <div class="icon">
-          <i
-            class="fa fa-google"
-            aria-hidden="true"></i>
+          <img
+            src="../../assets/image/02.jpg"
+            alt="" />
         </div>
         <span>Google</span>
       </div>
@@ -38,9 +38,9 @@
     <div class="box">
       <div class="front">
         <div class="icon">
-          <i
-            class="fa fa-windows"
-            aria-hidden="true"></i>
+          <img
+            src="../../assets/image/03.jpg"
+            alt="" />
         </div>
         <span>Microsoft</span>
       </div>
@@ -88,7 +88,9 @@
         transition: 0.5s ease;
         .icon {
           height: 80px;
-          i {
+          img {
+            width: 80px;
+            height: 100%;
             /* 渐变背景 */
             background: linear-gradient(220deg, #02dbb0, #007adf);
             /* 以区块内的文字作为裁剪区域向外裁剪，文字的背景即为区块的背景，文字之外的区域都将被裁剪掉 */

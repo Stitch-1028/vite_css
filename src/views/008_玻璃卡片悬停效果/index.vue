@@ -4,39 +4,39 @@
       <div
         ref="cardOne"
         class="card">
+        <img
+          src="../../assets/image/05.jpg"
+          alt="" />
         <div class="content">
           <h2>01</h2>
           <h3>Card One</h3>
-          <p>
-            Realistic glass card hover effect, realistic glass card hover effect, realistic glass
-            card hover effect.
-          </p>
+          <p> Realistic glass card hover effect, realistic glass card hover effect, realistic glass card hover effect. </p>
           <a @click="onclickA(1)">Read More</a>
         </div>
       </div>
       <div
         ref="cardTwo"
         class="card">
+        <img
+          src="../../assets/image/04.jpg"
+          alt="" />
         <div class="content">
           <h2>02</h2>
           <h3>Card Two</h3>
-          <p>
-            Realistic glass card hover effect, realistic glass card hover effect, realistic glass
-            card hover effect.
-          </p>
+          <p> Realistic glass card hover effect, realistic glass card hover effect, realistic glass card hover effect. </p>
           <a @click="onclickA(2)">Read More</a>
         </div>
       </div>
       <div
         ref="cardThree"
         class="card">
+        <img
+          src="../../assets/image/02.jpg"
+          alt="" />
         <div class="content">
           <h2>03</h2>
           <h3>Card Three</h3>
-          <p>
-            Realistic glass card hover effect, realistic glass card hover effect, realistic glass
-            card hover effect, realistic glass card hover effect.
-          </p>
+          <p> Realistic glass card hover effect, realistic glass card hover effect, realistic glass card hover effect, realistic glass card hover effect. </p>
           <a @click="onclickA(3)">Read More</a>
         </div>
       </div>
@@ -106,7 +106,6 @@
           opacity: 0;
           /* 动画过渡 */
           transition: 0.5s;
-
           h2 {
             position: absolute;
             top: -80px;
@@ -141,12 +140,25 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
           }
         }
-
+        img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: -0;
+          opacity: 1;
+          transition: 0.5s;
+        }
         &:hover {
           .content {
             /* 鼠标移入，上移+显示 */
             transform: translateY(0);
             opacity: 1;
+          }
+          img {
+            /* 鼠标移入，上移+显示 */
+            transform: translateY(-200);
+            opacity: 0;
           }
         }
       }
